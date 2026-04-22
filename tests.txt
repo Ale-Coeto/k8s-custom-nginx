@@ -1,12 +1,8 @@
-# Add Kubernetes apt repository
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+# 1. Install the Tigera Operator and CRDs
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.31.4/manifests/operator-crds.yaml
 
-# Set correct permissions
-sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.31.4/manifests/tigera-operator.yaml
 
-# Install Kubernetes components
-sudo apt-get update
-sudo apt-get install -y kubelet kubeadm kubectl
 
-# Enable IP forwarding
-sudo sysctl -w net.ipv4.ip_forward=1
+# 2. Download the custom resources file to configure the network
+curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.31.4/manifests/custom-resources.yaml
